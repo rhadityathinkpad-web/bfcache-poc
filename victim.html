@@ -1,0 +1,30 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Victim Bank — Online Banking</title>
+<style>body { font-family: sans-serif; background:#eef; }</style>
+<h1>victim-bank.test — Online Banking</h1>
+<p>The user is now looking at this page. This page plays no media and does not
+use the Media Session API.</p>
+<p>Nevertheless, the OS media controls (Global Media Controls / MPRIS) now show
+a "playing" session <b>attributed to victim-bank.test</b> whose title, artist,
+artwork, position bar and camera/microphone badges are controlled by the
+back/forward-cached attacker document, and media-key input for this tab is
+delivered to that attacker document.</p>
+
+<!-- Optional scenario 2: give the victim page REAL audible media. When the
+     user presses pause in the system UI, MediaSessionImpl::DidReceiveAction
+     force-suspends this (non-routed) player while the attacker's fake session
+     keeps "playing". -->
+<button id="playbtn" style="font-size:28px; padding:12px"
+        onclick="document.getElementById('a').play()">▶ Play victim audio</button>
+<div id="status" style="font-size:26px; font-weight:bold; margin-top:10px">
+  victim media: not started</div>
+<audio id="a" src="tone.wav" loop></audio>
+<script>
+  const a = document.getElementById('a');
+  const s = document.getElementById('status');
+  a.onplay  = () => { s.textContent = 'victim media: PLAYING';
+                      s.style.color = 'green'; };
+  a.onpause = () => { s.textContent = 'victim media: FORCE-PAUSED';
+                      s.style.color = 'red'; };
+</script>
